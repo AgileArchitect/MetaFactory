@@ -1,6 +1,11 @@
 // Import React and React DOM
 import * as React from 'react';
 import { render } from 'react-dom';
+
+import { Provider } from 'react-redux'
+
+import reducer from './reducers'
+
 // Import the Hot Module Reloading App Container – more on why we use 'require' below
 const { AppContainer } = require('react-hot-loader');
 
@@ -13,11 +18,13 @@ declare var module: { hot: any };
 // Get the root element from the HTML
 const rootEl = document.getElementById('app');
 
+const store = createStore(reducer)
+
 // And render our App into it, inside the HMR App ontainer which handles the hot reloading
 render(
-  <AppContainer>
+  <Provider>
     <App />
-  </AppContainer>,
+  </Provider>,
   rootEl
 );
 

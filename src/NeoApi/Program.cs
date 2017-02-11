@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -64,43 +66,55 @@ namespace NeoApi
         }
     }
 
+    public class Service
+    {
+        private IWebHost _host;
+
+        public void Start()
+        {
+            _host = new WebHostBuilder()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseKestrel()
+                //                .UseUrls("http://+:5000")
+                .UseStartup<Startup>()
+                .Build();
+
+
+            _host.Start();
+        }
+
+        public void Stop()
+        {
+            _host.Dispose();
+        }
+    }
+
     public class Program
     {
 
 
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseKestrel()
-                .UseStartup<Startup>()
-                .Build();
+            var service = new Service();
+            service.Start();
 
-            host.Run();
+            if (args.Length > 2 && args[0] == "generate")
+            {
+                var url = args[1];
+                var destination = args[2];
+                var result = new HttpClient().GetAsync(url).Result;
+                var body = result.Content.ReadAsStringAsync().Result;
+                File.WriteAllText("swagger.json", body);
+                service.Stop();
+            }
+            else
+            {
+
+                Console.WriteLine("Press a key to end..");
+                Console.ReadKey();
+                service.Stop();
+            }
         }
-
-        public static void DoSomeStuff()
-        {
-            var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "trustno1");
-            client.Connect();
-
-            var package = new Package { Name = "MyPackage", Version = "1.0.2" };
-
-            var p1 = client.Store(package);
-
-            var results = client.Query<Package>();
-
-
-            Console.WriteLine(results);
-        }
-
-        public class Person
-        {
-            [JsonProperty(PropertyName = "name")]
-            public string Name { get; set; }
-        }
-
-
     }
 
     public class MyLoggerProvider : ILoggerProvider

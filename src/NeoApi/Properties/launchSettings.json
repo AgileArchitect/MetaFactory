@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "NeoApi": {
+      "commandName": "Project",
+      "commandLineArgs": "generate"
+    }
+  }
+}

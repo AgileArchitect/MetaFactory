@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MetaFactory.Collector.NugetDependencies": {
+      "commandName": "Project",
+      "commandLineArgs": "http://localhost:5000"
+    }
+  }
+}

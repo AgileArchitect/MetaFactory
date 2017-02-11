@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Neo4jClient;
+using NeoApi.Logic.Graph;
 
 namespace NeoApi.Config
 {
@@ -13,10 +14,14 @@ namespace NeoApi.Config
         {
             base.Load(builder);
 
-            var configuration = NeoServerConfiguration.GetConfiguration(new Uri("http://localhost:7474/db/data"),
-                "neo4j", "trustno1");
+            builder.RegisterType<GraphLogic>();
+
+            var config = NeoServerConfiguration.GetConfiguration(new Uri("http://NCPRDMON02.ncontrol.local:7474/db/data"), "neo4j", "trustno1");
+
+            builder.RegisterInstance(config);
+
             
-            var factory = new GraphClientFactory(configuration);
+            var factory = new GraphClientFactory(config);
 
             builder.RegisterInstance(factory);
             builder.Register((c, m) => c.Resolve<GraphClientFactory>().Create()).As<IGraphClient>();

@@ -5,3 +5,9 @@ project.lock.json
 tools
 packages/
 .suo
+
+artifacts/
+
+nswag/
+.vs/
+src/MetaFactory.Client/**/*.cs

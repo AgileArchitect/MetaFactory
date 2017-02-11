@@ -9,7 +9,7 @@
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.0.3"
+          "version": "1.0.1"
         }
       },
       "imports": "dnxcore50"
@@ -23,7 +23,7 @@
     "Microsoft.AspNetCore.Owin": "1.1.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
     "Microsoft.Extensions.Logging.Console": "1.1.0",
-    "Neo4jClient": "2.0.0.6",
+    "Neo4jClient": "2.0.0.7",
     "Swashbuckle.AspNetCore": "1.0.0-rc1"
   }
 }

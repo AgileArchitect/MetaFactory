@@ -63,16 +63,16 @@ namespace NeoApi.Controllers
         [Produces(typeof(Graph))]
         public Graph QueryRelationship([FromRoute] string label, [FromRoute] string fromType, [FromRoute] string toType)
         {
-            var data = _graphClient.Cypher.Match($"(n1:{fromType})-:{label}(n2:{toType})")
+            var data = _graphClient.Cypher.Match($"(n1:{fromType})-[:{label}]->(n2:{toType})")
                 .Return((n1, n2) => new
                 {
                     Node = n1.As<Node>(),
                     Relations = n2.CollectAs<Node>()
-                });
+                }).Results;
 
             var nodes = new List<Node>();
             var edges = new List<Edge>();
-            foreach (var n in data.Results)
+            foreach (var n in data)
             {
                 nodes.Add(n.Node);
                 foreach (var other in n.Relations)
@@ -89,7 +89,7 @@ namespace NeoApi.Controllers
 
             var graph = new Graph()
             {
-                Nodes = data.Results.Select(anon => anon.Node),
+                Nodes = nodes,
                 Edges = edges
             };
 

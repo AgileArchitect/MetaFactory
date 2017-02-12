@@ -102,9 +102,10 @@ namespace NeoApi
             {
                 var url = args[1];
                 var destination = args[2];
+                Console.WriteLine("Exporting swagger definition to " + destination);
                 var result = new HttpClient().GetAsync(url).Result;
                 var body = result.Content.ReadAsStringAsync().Result;
-                File.WriteAllText("swagger.json", body);
+                File.WriteAllText(destination, body);
                 service.Stop();
             }
             else

@@ -16,7 +16,7 @@ namespace NeoApi.Config
 
             builder.RegisterType<GraphLogic>();
 
-            var config = NeoServerConfiguration.GetConfiguration(new Uri("http://NCPRDMON02.ncontrol.local:7474/db/data"), "neo4j", "trustno1");
+            var config = NeoServerConfiguration.GetConfiguration(new Uri("http://localhost:7474/db/data"), "neo4j", "trustno1");
 
             builder.RegisterInstance(config);
 

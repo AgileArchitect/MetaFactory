@@ -4,6 +4,12 @@ var target = Argument("target", "Default");
 #addin nuget:?package=Cake.AutoRest
 //#tool nuget:?package=NSwag.MSBuild
 
+Task("Clean")
+    .Does(() => {
+        CreateDirectory("./artifacts");
+        CleanDirectory("./artifacts");
+    });
+
 Task("Build-Api")
     .Does(() => {
 
@@ -17,18 +23,22 @@ Task("Build-Api")
             OutputDirectory = "./artifacts/"
         };
 
-        DotNetCoreBuild("./src/NeoApi", settings);
+        DotNetCoreBuild("./src/MetaFactory", settings);
     });
 
 Task("Generate-Client")
+    .IsDependentOn("Clean")
+    .IsDependentOn("Build-Api")
     .Does(() => {
 
 
-        var path = MakeAbsolute(File("./swagger.json"));
+        var path = MakeAbsolute(File("./artifacts/swagger.json"));
+
+        Information("Trying to generate " + path);
 
         StartProcess("dotnet", new ProcessSettings() {
             Arguments = "run generate http://localhost:5000/swagger/v1/swagger.json " + path,
-            WorkingDirectory = "./src/NeoApi"
+            WorkingDirectory = "./src/MetaFactory"
         });
 
         var settings = new AutoRestSettings {
@@ -39,28 +49,25 @@ Task("Generate-Client")
             OutputDirectory = "./src/Metafactory.Client"
         };
 
-        AutoRest.Generate("./swagger.json", settings);
+        AutoRest.Generate(path, settings);
 
     });
 
-Task("Build-All")
-    .IsDependentOn("Generate-Client")
+Task("Build-Client")
+    //.IsDependentOn("Generate-Client")
     .Does(() => {
-
-        CreateDirectory("./artifacts");
-        CleanDirectory("./artifacts");
 
         var settings = new DotNetCoreBuildSettings
         {
-            Framework = "netcoreapp1.1",
+            Framework = ".NETStandard,Version=v1.2",
             Configuration = "Release",
             OutputDirectory = "./artifacts/"
         };
 
-        DotNetCoreBuild("./src", settings);
+        DotNetCoreBuild("./src/MetaFactory.Client", settings);
     });
 
 Task("Default")
-    .IsDependentOn("Build-All");
+    .IsDependentOn("Build-Client");
 
 RunTarget(target);

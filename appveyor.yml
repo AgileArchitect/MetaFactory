@@ -1,0 +1,13 @@
+version: 1.0.0-build{build}
+
+init:
+  - git config --global core.autocrlf true
+
+build_script:
+  - ps: .\build.ps1 -Target "AppVeyor"
+
+branches:
+  only:
+    - master
+    - develop
+

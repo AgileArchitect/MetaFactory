@@ -12,8 +12,6 @@ using NeoApi.Logic.Graph;
 
 namespace NeoApi.Controllers
 {
-
-
     [Route("/api/node")]
     public class NodeController : ControllerBase
     {
@@ -87,7 +85,7 @@ namespace NeoApi.Controllers
                 }
             }
 
-            var graph = new Graph()
+            var graph = new Graph
             {
                 Nodes = nodes,
                 Edges = edges

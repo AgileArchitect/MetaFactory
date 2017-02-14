@@ -1,15 +1,21 @@
 {
   "version": "1.0.0-*",
-
-  "dependencies": {
-    "Cake.Core": "0.17.0",
-    "MetaFactory.Client": "1.0.0-*",
-    "NETStandard.Library": "1.6.1"
-  },
-
   "frameworks": {
+    "net45": {
+      "dependencies": {
+        "MetaFactory.Client": {
+          "version" : "1.0.0-*",
+          "type": "build"
+        }
+      }
+    },
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "dependencies": {
+        "Cake.Core": "0.17.0",
+        "MetaFactory.Client": "1.0.0-*",
+        "NETStandard.Library": "1.6.1"
+      }
     }
   }
 }

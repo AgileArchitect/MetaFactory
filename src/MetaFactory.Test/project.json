@@ -1,12 +1,9 @@
-﻿{
+{
   "version": "1.0.0-*",
-
   "dependencies": {
-    "dotnet-test-xunit": "2.2.0-preview2-build1029",
-    "MetaFactory.Core": "1.0.0-*",
-    "NETStandard.Library": "1.6.0",
     "xunit": "2.2.0-rc1-build3507"
   },
+
   "testRunner": "xunit",
   "frameworks": {
     "netcoreapp1.0": {
@@ -14,7 +11,12 @@
         "Microsoft.NETCore.App": {
           "type": "platform",
           "version": "1.0.1"
-        }
+        },
+        "Cake.MetaFactory": "1.0.0-*",
+        "dotnet-test-xunit": "2.2.0-preview2-build1029",
+        "MetaFactory.Core": "1.0.0-*",
+        "NETStandard.Library": "1.6.1"
+
       }
     }
   }

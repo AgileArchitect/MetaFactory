@@ -11,3 +11,4 @@ artifacts/
 nswag/
 .vs/
 src/MetaFactory.Client/**/*.cs
+nuget/

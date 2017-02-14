@@ -14,16 +14,23 @@ namespace NeoApi.Config
         {
             base.Load(builder);
 
+            var neo4j = Environment.GetEnvironmentVariable("NEO4J_HOST") ?? "localhost";
+
+            Console.WriteLine($"Using neo4j at http://{neo4j}:7474");
+
             builder.RegisterType<GraphLogic>();
 
-            var config = NeoServerConfiguration.GetConfiguration(new Uri("http://localhost:7474/db/data"), "neo4j", "trustno1");
+            builder.Register(
+                    (c,m) =>
+                        NeoServerConfiguration.GetConfiguration(
+                            new Uri($"http://{neo4j}:7474/db/data"), "neo4j", "trustno1"))
+                .As<NeoServerConfiguration>()
+                .SingleInstance();
 
-            builder.RegisterInstance(config);
+            builder.Register((c, m) => new GraphClientFactory(c.Resolve<NeoServerConfiguration>()))
+                .As<GraphClientFactory>()
+                .SingleInstance();
 
-            
-            var factory = new GraphClientFactory(config);
-
-            builder.RegisterInstance(factory);
             builder.Register((c, m) => c.Resolve<GraphClientFactory>().Create()).As<IGraphClient>();
 
         }

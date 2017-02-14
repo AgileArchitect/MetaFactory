@@ -55,7 +55,7 @@ namespace NeoApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
-        public void Configure(IApplicationBuilder app,ILoggerFactory loggerFactory, IHostingEnvironment env, IApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app,ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
         {
             loggerFactory.AddConsole();
 
@@ -117,46 +117,4 @@ namespace NeoApi
             }
         }
     }
-
-    public class MyLoggerProvider : ILoggerProvider
-    {
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ILogger CreateLogger(string categoryName)
-        {
-            return new MyLogger();
-        }
-    }
-
-    public class MyLogger : ILogger, IDisposable
-    {
-
-        IDisposable ILogger.BeginScope<TState>(TState state)
-        {
-            return BeginScope(state);
-        }
-
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState,Exception,string> formatter)
-        {
-            Console.WriteLine(formatter(state,exception));
-        }
-
-        public bool IsEnabled(LogLevel logLevel)
-        {
-            return true;
-        }
-
-        public IDisposable BeginScope<TState>(TState state)
-        {
-            return this;
-        }
-
-        public void Dispose()
-        {
-        }
-    }
-
 }

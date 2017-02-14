@@ -20,8 +20,6 @@ else if( currentBranch.FriendlyName != "master" ) {
     }
 }
 
-#r "./src/Cake.MetaFactory/bin/Debug/net45/Cake.MetaFactory.dll"
-
 Task("Clean")
     .Does(() => {
         CreateDirectory("./artifacts");
@@ -110,12 +108,6 @@ Task("Build-Cake-Addin")
         };
 
         DotNetCoreBuild("./src/Cake.MetaFactory", settings);
-    });
-
-Task("Try-Cake-Plugin")
-    .IsDependentOn("Build-Cake-Addin")
-    .Does(() => {
-        MetaFactory("http://localhost:5000").Dependency(new PackageVersion{ Name = "Cake.MetaFactory", Version = new Version("0.1.0") }, new PackageVersion { Name = "Cake.Core", Version = new Version("0.17.0")});
     });
 
 Task("Package")
